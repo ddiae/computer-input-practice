@@ -2,7 +2,7 @@ interface Props {
   current: number;
   total: number;
   onHome: () => void;
-  mode: 'normal' | 'levelup';
+  mode: "normal" | "levelup";
 }
 
 export function ProgressBar({ current, total, onHome, mode }: Props) {
@@ -22,7 +22,7 @@ export function ProgressBar({ current, total, onHome, mode }: Props) {
           <span
             key={i}
             className={`text-4xl leading-none transition-all duration-300 ${
-              i < current ? 'opacity-100 scale-110' : 'opacity-20 grayscale'
+              i < current ? "opacity-100 scale-110" : "opacity-20 grayscale"
             }`}
           >
             ⭐
@@ -31,10 +31,14 @@ export function ProgressBar({ current, total, onHome, mode }: Props) {
       </div>
 
       {/* 모드 뱃지 - 절대 우측 */}
-      <span className={`absolute right-4 px-3 py-1.5 rounded-full text-xs font-bold ${
-        mode === 'normal' ? 'bg-purple-100 text-purple-700' : 'bg-pink-100 text-pink-700'
-      }`}>
-        {mode === 'normal' ? '📝 일반' : '👑 레벨업'}
+      <span
+        className={`absolute right-4 px-3 py-1.5 rounded-full text-xs font-bold ${
+          mode === "normal"
+            ? "bg-purple-100 text-purple-700"
+            : "bg-pink-100 text-pink-700"
+        }`}
+      >
+        {mode === "normal" ? "📝 Basic" : "👑 Level Up"}
       </span>
     </div>
   );

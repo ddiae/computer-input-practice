@@ -206,7 +206,7 @@ export const normalSets: PracticeSet[] = [
       [
         { id: "6-2-0", text: "가을에는", answer: "가을에는", isWrong: false },
         { id: "6-2-1", text: "단풍이", answer: "단풍이", isWrong: false },
-        { id: "6-2-2", text: "발갛게", answer: "빨갛게", isWrong: true },
+        { id: "6-2-2", text: "말갛게", answer: "빨갛게", isWrong: true },
         { id: "6-2-3", text: "물드러요.", answer: "물들어요.", isWrong: true }
       ],
       [
@@ -266,17 +266,17 @@ export const normalSets: PracticeSet[] = [
     words: [
       [
         { id: "3-0-0", text: "오늘은", answer: "오늘은", isWrong: false },
-        { id: "3-0-1", text: "sky가", answer: "날씨가", isWrong: true },
+        { id: "3-0-1", text: "날시가", answer: "날씨가", isWrong: true },
         { id: "3-0-2", text: "맑고", answer: "맑고", isWrong: false },
         { id: "3-0-3", text: "sunny해요.", answer: "화창해요.", isWrong: true }
       ],
       [
-        { id: "3-1-0", text: "wind이", answer: "바람이", isWrong: true },
+        { id: "3-1-0", text: "wind", answer: "바람이", isWrong: true },
         { id: "3-1-1", text: "살랑살랑", answer: "살랑살랑", isWrong: false },
         { id: "3-1-2", text: "불어와요.", answer: "불어와요.", isWrong: false }
       ],
       [
-        { id: "3-2-0", text: "cloud이", answer: "구름이", isWrong: true },
+        { id: "3-2-0", text: "cloud", answer: "구름이", isWrong: true },
         { id: "3-2-1", text: "두둥실", answer: "두둥실", isWrong: false },
         { id: "3-2-2", text: "떠다녀요.", answer: "떠다녀요.", isWrong: false }
       ],
@@ -356,7 +356,7 @@ export const normalSets: PracticeSet[] = [
       ],
       [
         { id: "5-2-0", text: "달꼼한", answer: "달콤한", isWrong: true },
-        { id: "5-2-1", text: "게이크를", answer: "케이크를", isWrong: true },
+        { id: "5-2-1", text: "캐이쿠를", answer: "케이크를", isWrong: true },
         { id: "5-2-2", text: "먹고", answer: "먹고", isWrong: false },
         { id: "5-2-3", text: "십어요.", answer: "싶어요.", isWrong: true }
       ],

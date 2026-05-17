@@ -88,7 +88,12 @@ export function PracticePage() {
   if (!state) return null;
 
   if (!learnDone && !teacherMode) {
-    return <KeyboardLearn onDone={() => setLearnDone(true)} onHome={() => navigate("/")} />;
+    return (
+      <KeyboardLearn
+        onDone={() => setLearnDone(true)}
+        onHome={() => navigate("/")}
+      />
+    );
   }
 
   const currentSet = state.sets[state.currentSetIndex];
@@ -112,14 +117,14 @@ export function PracticePage() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm">
             <div className="text-center mb-6">
-              <div className="text-6xl mb-3">🏆</div>
+              <div className="text-6xl mb-3">{isNormal ? "🏆" : "🌟"}</div>
               <h2 className="text-2xl font-black text-gray-800 mb-1">
-                {isNormal ? "일반 모드 완료!" : "레벨업 완료!"}
+                {isNormal ? "일반 모드 완료!" : "참 잘했어요!"}
               </h2>
               <p className="text-sm text-gray-500">
                 {isNormal
                   ? "10세트 모두 끝냈어요! 정말 잘했어요! 🎉"
-                  : "레벨업 모드까지 완료! 최고예요! 🌟"}
+                  : "레벨업까지 모두 완료했어요! 최고예요! 🎉"}
               </p>
             </div>
             <div className="flex flex-col gap-3">
@@ -140,7 +145,11 @@ export function PracticePage() {
                   clearState();
                   navigate("/");
                 }}
-                className="w-full py-4 rounded-2xl text-base font-bold text-gray-500 border-2 border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+                className={`w-full rounded-2xl font-black transition-all duration-100 cursor-pointer ${
+                  isNormal
+                    ? "py-4 text-base font-bold text-gray-500 border-2 border-gray-200 bg-white hover:bg-gray-50"
+                    : "py-5 text-xl text-white bg-purple-400 shadow-[0_5px_0_#7c3aed] active:translate-y-1.25 active:shadow-[0_0px_0_#7c3aed]"
+                }`}
               >
                 🔄 다시하기
               </button>
@@ -226,14 +235,14 @@ export function PracticePage() {
       <div className="max-w-4xl w-full mx-auto">
         <SetCard
           set={currentSet}
-          mode={state.mode}
+          mode={teacherMode && !isNormal ? 'normal' : state.mode}
           wordStatuses={state.wordStatuses}
           onStatusChange={handleStatusChange}
         />
       </div>
 
       {/* 키보드 가이드 - 남은 공간 중앙 */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center pt-10 justify-center">
         <KeyboardGuide />
       </div>
     </div>

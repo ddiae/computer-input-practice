@@ -9,6 +9,49 @@ interface Props {
   onStatusChange: (id: string, status: WordStatus) => void;
 }
 
+function DiffTooltip({ wrong, answer }: { wrong: string; answer: string }) {
+  const wrongChars = [...wrong];
+  const answerChars = [...answer];
+  const len = Math.max(wrongChars.length, answerChars.length);
+
+  return (
+    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-50 pointer-events-none
+                    opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+      <div className="bg-gray-800 text-white rounded-2xl px-4 py-3 shadow-xl whitespace-nowrap flex flex-col items-center gap-2 text-sm font-bold">
+        {/* 틀린 글자 */}
+        <div className="flex items-center gap-0.5">
+          {Array.from({ length: len }, (_, i) => {
+            const w = wrongChars[i] ?? '';
+            const a = answerChars[i] ?? '';
+            const diff = w !== a;
+            return (
+              <span key={i} className={diff ? 'text-red-400 underline' : 'text-white'}>
+                {w || ' '}
+              </span>
+            );
+          })}
+        </div>
+        <span className="text-gray-400 text-xs">↓ 이렇게 고쳐봐요!</span>
+        {/* 정답 */}
+        <div className="flex items-center gap-0.5">
+          {Array.from({ length: len }, (_, i) => {
+            const w = wrongChars[i] ?? '';
+            const a = answerChars[i] ?? '';
+            const diff = w !== a;
+            return (
+              <span key={i} className={diff ? 'text-green-400 font-black' : 'text-white'}>
+                {a || ' '}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+      {/* 말풍선 꼬리 */}
+      <div className="w-3 h-3 bg-gray-800 rotate-45 mx-auto -mt-1.5 rounded-sm" />
+    </div>
+  );
+}
+
 export function WordBlock({ word, status, mode, onStatusChange }: Props) {
   const [inputValue, setInputValue] = useState(word.text);
   const [wrongText, setWrongText] = useState('');
@@ -83,24 +126,31 @@ export function WordBlock({ word, status, mode, onStatusChange }: Props) {
 
   const displayText = status === 'wrong' ? wrongText : word.text;
   const isWrongHighlight = (mode === 'normal' && word.isWrong) || status === 'wrong';
+  const showTooltip = isWrongHighlight && isClickable;
+  const tooltipWrong = status === 'wrong' ? wrongText : word.text;
 
   return (
-    <button
-      onClick={handleClick}
-      disabled={!isClickable}
-      className={[
-        'inline-flex items-center px-2.5 py-1.5 rounded-2xl text-2xl font-black transition-all duration-100',
-        status === 'wrong' ? 'shake' : '',
-        isClickable
-          ? isWrongHighlight
-            ? 'text-red-500 border-2 border-red-300 bg-red-50 hover:bg-red-100 cursor-pointer shadow-[0_3px_0_#fca5a5]'
-            : 'text-gray-700 border-2 border-transparent hover:border-gray-200 hover:bg-gray-100 cursor-pointer'
-          : 'text-gray-700 cursor-default',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      {displayText}
-    </button>
+    <span className="relative group inline-flex">
+      <button
+        onClick={handleClick}
+        disabled={!isClickable}
+        className={[
+          'inline-flex items-center px-2.5 py-1.5 rounded-2xl text-2xl font-black transition-all duration-100',
+          status === 'wrong' ? 'shake' : '',
+          isClickable
+            ? isWrongHighlight
+              ? 'text-red-500 border-2 border-red-300 bg-red-50 hover:bg-red-100 cursor-pointer shadow-[0_3px_0_#fca5a5]'
+              : 'text-gray-700 border-2 border-transparent hover:border-gray-200 hover:bg-gray-100 cursor-pointer'
+            : 'text-gray-700 cursor-default',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+      >
+        {displayText}
+      </button>
+      {showTooltip && (
+        <DiffTooltip wrong={tooltipWrong} answer={word.answer} />
+      )}
+    </span>
   );
 }

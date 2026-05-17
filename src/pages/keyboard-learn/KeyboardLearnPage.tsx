@@ -133,12 +133,7 @@ function KeyCap({
 
 function KeyVisual({ target }: { target: string }) {
   if (target === "shift") return <KeyCap>Shift</KeyCap>;
-  if (target === "space")
-    return (
-      <KeyCap wide>
-        <div className="w-14 h-1 rounded-full bg-gray-400" />
-      </KeyCap>
-    );
+  if (target === "space") return <KeyCap wide />;
   if (target === "backspace")
     return (
       <KeyCap wide>
@@ -202,7 +197,7 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
           } else {
             setStepIdx((i) => i + 1);
           }
-        }, 2000);
+        }, 1500);
       }
     };
 
@@ -273,11 +268,10 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
             )}
           </div>
         </div>
-
       </div>
 
-      {/* 피드백 - 하단 남은 영역 중간 */}
-      <div className="flex-1 flex items-center justify-center max-w-2xl w-full mx-auto">
+      {/* 피드백 */}
+      <div className="h-24 flex items-center justify-center max-w-2xl w-full mx-auto">
         {correct && (
           <div className="bg-green-100 border-2 border-green-300 rounded-2xl px-6 py-3 text-center">
             <p className="text-lg font-black text-green-700">
