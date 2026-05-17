@@ -213,7 +213,7 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
           onClick={onHome}
           className="px-3.5 py-1.5 bg-white border-2 border-purple-200 rounded-full text-xs font-bold text-purple-700 hover:bg-purple-50 transition-all cursor-pointer"
         >
-          ← 홈
+          홈
         </button>
         <div className="flex gap-1.5">
           {steps.map((_, i) => (
