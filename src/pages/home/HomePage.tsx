@@ -50,7 +50,7 @@ export default function HomePage() {
         <div className="text-8xl drop-shadow-sm">⌨️</div>
         <h1 className="text-3xl font-black text-gray-800">키보드 연습</h1>
         <p className="text-sm text-gray-500">
-          틀린 어절을 찾아 올바르게 고쳐봐요!
+          틀린 글자를 찾아 올바르게 고쳐봐요!
         </p>
 
         {/* 선생님 모드 활성 표시 */}
