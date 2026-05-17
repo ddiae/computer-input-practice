@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ParagraphView } from "../paragraph-view/ParagraphView";
 import type { PracticeSet, WordStatus, Mode } from "../../shared/types";
 
@@ -41,6 +42,14 @@ function SetProgress({
 }
 
 export function SetCard({ set, mode, wordStatuses, onStatusChange }: Props) {
+  const [hintFlash, setHintFlash] = useState(false);
+
+  function handleHint() {
+    if (hintFlash) return;
+    setHintFlash(true);
+    setTimeout(() => setHintFlash(false), 1000);
+  }
+
   return (
     <div className="flex flex-col gap-3 lg:flex-row lg:gap-4">
       {/* 원문 */}
@@ -66,6 +75,15 @@ export function SetCard({ set, mode, wordStatuses, onStatusChange }: Props) {
               ? "✏️ 틀린 곳을 찾아 고쳐요."
               : "🔍 틀린 곳을 직접 찾아 고쳐요."}
           </p>
+          {mode === "levelup" && (
+            <button
+              onClick={handleHint}
+              disabled={hintFlash}
+              className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-600 hover:bg-amber-200 transition-colors cursor-pointer disabled:opacity-50"
+            >
+              💡 힌트 보기
+            </button>
+          )}
         </div>
 
         <SetProgress set={set} wordStatuses={wordStatuses} />
@@ -75,6 +93,7 @@ export function SetCard({ set, mode, wordStatuses, onStatusChange }: Props) {
           mode={mode}
           wordStatuses={wordStatuses}
           onStatusChange={onStatusChange}
+          hintFlash={hintFlash}
         />
       </div>
     </div>

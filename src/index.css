@@ -30,3 +30,13 @@ body {
 .correct-flash {
   animation: correct-flash 0.3s ease;
 }
+
+@keyframes hint-flash {
+  0%, 100% { border-color: transparent; box-shadow: none; }
+  30%, 70%  { border-color: #f59e0b; box-shadow: 0 0 0 3px #fde68a; }
+}
+
+.hint-flash {
+  border-width: 2px !important;
+  animation: hint-flash 1s ease;
+}

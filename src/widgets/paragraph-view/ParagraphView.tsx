@@ -6,9 +6,10 @@ interface Props {
   mode: Mode;
   wordStatuses: Record<string, WordStatus>;
   onStatusChange: (id: string, status: WordStatus) => void;
+  hintFlash?: boolean;
 }
 
-export function ParagraphView({ set, mode, wordStatuses, onStatusChange }: Props) {
+export function ParagraphView({ set, mode, wordStatuses, onStatusChange, hintFlash = false }: Props) {
   return (
     <div className="flex flex-col gap-3">
       {set.words.map((line, lineIdx) => (
@@ -20,6 +21,7 @@ export function ParagraphView({ set, mode, wordStatuses, onStatusChange }: Props
               status={wordStatuses[word.id] ?? 'idle'}
               mode={mode}
               onStatusChange={onStatusChange}
+              hintFlash={hintFlash}
             />
           ))}
         </div>

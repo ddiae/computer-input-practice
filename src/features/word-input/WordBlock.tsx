@@ -7,6 +7,7 @@ interface Props {
   status: WordStatus;
   mode: Mode;
   onStatusChange: (id: string, status: WordStatus) => void;
+  hintFlash?: boolean;
 }
 
 function DiffTooltip({ wrong, answer }: { wrong: string; answer: string }) {
@@ -52,7 +53,7 @@ function DiffTooltip({ wrong, answer }: { wrong: string; answer: string }) {
   );
 }
 
-export function WordBlock({ word, status, mode, onStatusChange }: Props) {
+export function WordBlock({ word, status, mode, onStatusChange, hintFlash = false }: Props) {
   const [inputValue, setInputValue] = useState(word.text);
   const [wrongText, setWrongText] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -128,6 +129,7 @@ export function WordBlock({ word, status, mode, onStatusChange }: Props) {
   const isWrongHighlight = (mode === 'normal' && word.isWrong) || status === 'wrong';
   const showTooltip = isWrongHighlight && isClickable;
   const tooltipWrong = status === 'wrong' ? wrongText : word.text;
+  const showHintFlash = hintFlash && word.isWrong;
 
   return (
     <span className="relative group inline-flex">
@@ -137,6 +139,7 @@ export function WordBlock({ word, status, mode, onStatusChange }: Props) {
         className={[
           'inline-flex items-center px-2.5 py-1.5 rounded-2xl text-2xl font-black transition-all duration-100',
           status === 'wrong' ? 'shake' : '',
+          showHintFlash ? 'hint-flash' : '',
           isClickable
             ? isWrongHighlight
               ? 'text-red-500 border-2 border-red-300 bg-red-50 hover:bg-red-100 cursor-pointer shadow-[0_3px_0_#fca5a5]'
