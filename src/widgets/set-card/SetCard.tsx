@@ -63,8 +63,8 @@ export function SetCard({ set, mode, wordStatuses, onStatusChange }: Props) {
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-gray-600">
             {mode === "normal"
-              ? "✏️ 틀린 곳을 찾아 고쳐요"
-              : "🔍 틀린 곳을 직접 찾아 고쳐요"}
+              ? "✏️ 틀린 곳을 찾아 고쳐요."
+              : "🔍 틀린 곳을 직접 찾아 고쳐요."}
           </p>
         </div>
 
@@ -76,8 +76,6 @@ export function SetCard({ set, mode, wordStatuses, onStatusChange }: Props) {
           wordStatuses={wordStatuses}
           onStatusChange={onStatusChange}
         />
-
-
       </div>
     </div>
   );
