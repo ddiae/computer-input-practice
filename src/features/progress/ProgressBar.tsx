@@ -2,10 +2,11 @@ interface Props {
   current: number;
   total: number;
   onHome: () => void;
+  onReset: () => void;
   mode: "normal" | "levelup";
 }
 
-export function ProgressBar({ current, total, onHome, mode }: Props) {
+export function ProgressBar({ current, total, onHome, onReset, mode }: Props) {
   return (
     <div className="relative flex justify-center items-center w-full py-1 px-4">
       {/* 홈 버튼 - 절대 좌측 */}
@@ -30,16 +31,24 @@ export function ProgressBar({ current, total, onHome, mode }: Props) {
         ))}
       </div>
 
-      {/* 모드 뱃지 - 절대 우측 */}
-      <span
-        className={`absolute right-4 px-3 py-1.5 rounded-full text-xs font-bold ${
-          mode === "normal"
-            ? "bg-purple-100 text-purple-700"
-            : "bg-pink-100 text-pink-700"
-        }`}
-      >
-        {mode === "normal" ? "📝 Basic" : "👑 Level Up"}
-      </span>
+      {/* 우측: 모드 뱃지 + 처음부터 버튼 */}
+      <div className="absolute right-4 flex items-end gap-2">
+        <span
+          className={`px-3 py-2 rounded-full text-xs font-bold ${
+            mode === "normal"
+              ? "bg-purple-100 text-purple-700"
+              : "bg-pink-100 text-pink-700"
+          }`}
+        >
+          {mode === "normal" ? "📝 Basic" : "👑 Level Up"}
+        </span>
+        <button
+          onClick={onReset}
+          className="px-3.5 py-1.5 bg-white border-2 border-gray-200 rounded-full text-xs font-bold text-gray-400 hover:bg-gray-50 transition-all cursor-pointer"
+        >
+          처음부터 다시하기
+        </button>
+      </div>
     </div>
   );
 }

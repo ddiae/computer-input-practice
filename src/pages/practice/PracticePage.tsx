@@ -20,7 +20,7 @@ export function PracticePage() {
   const [state, setState] = useState<PracticeState | null>(null);
   const [celebrating, setCelebrating] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
-  const [learnDone, setLearnDone] = useState(false);
+  const [learnDone, setLearnDone] = useState(() => sessionStorage.getItem("keyboard_learn_done") === "1");
   const teacherMode = isTeacherMode();
 
   useEffect(() => {
@@ -90,7 +90,10 @@ export function PracticePage() {
   if (!learnDone && !teacherMode) {
     return (
       <KeyboardLearn
-        onDone={() => setLearnDone(true)}
+        onDone={() => {
+            sessionStorage.setItem("keyboard_learn_done", "1");
+            setLearnDone(true);
+          }}
         onHome={() => navigate("/")}
       />
     );
@@ -164,6 +167,11 @@ export function PracticePage() {
         total={state.sets.length}
         mode={state.mode}
         onHome={() => navigate("/")}
+        onReset={() => {
+          sessionStorage.removeItem("keyboard_learn_done");
+          clearState();
+          navigate("/");
+        }}
       />
 
       {/* 선생님 모드 컨트롤 패널 */}
@@ -235,7 +243,7 @@ export function PracticePage() {
       <div className="max-w-4xl w-full mx-auto">
         <SetCard
           set={currentSet}
-          mode={teacherMode && !isNormal ? 'normal' : state.mode}
+          mode={teacherMode && !isNormal ? "normal" : state.mode}
           wordStatuses={state.wordStatuses}
           onStatusChange={handleStatusChange}
         />

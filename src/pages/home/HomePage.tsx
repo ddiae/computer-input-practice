@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { initState } from "../../entities/practice-set/model";
+import { initState, loadState } from "../../entities/practice-set/model";
 import {
   TEACHER_PASSWORD,
   TEACHER_MODE_KEY,
@@ -72,7 +72,7 @@ export default function HomePage() {
       <div className="w-full max-w-xs flex flex-col items-center gap-3">
         <button
           onClick={() => {
-            initState("normal");
+            if (!loadState()) initState("normal");
             navigate("/practice");
           }}
           className="w-full py-5 rounded-3xl text-xl font-black bg-purple-400 text-white shadow-[0_5px_0_#7c3aed] active:translate-y-1.25 active:shadow-[0_0px_0_#7c3aed] transition-all duration-100 cursor-pointer"

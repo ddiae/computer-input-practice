@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { KeyboardGuide } from "../../features/keyboard-guide/KeyboardGuide";
 
 interface Step {
   phase: 1 | 2;
@@ -136,9 +137,9 @@ function KeyVisual({ target }: { target: string }) {
   if (target === "space") return <KeyCap wide />;
   if (target === "backspace")
     return (
-      <KeyCap wide>
-        <span>Backspace ←</span>
-      </KeyCap>
+      <div className="flex items-center justify-end pr-2 bg-white border-2 border-gray-300 rounded-md shadow-[0_3px_0_#6b7280] text-xs font-black text-gray-700 shrink-0 h-8 w-16">
+        ←
+      </div>
     );
   if (target === "hangeul") return <KeyCap>한/영</KeyCap>;
   if (target === "enter")
@@ -175,6 +176,8 @@ interface Props {
 export function KeyboardLearn({ onDone, onHome }: Props) {
   const [stepIdx, setStepIdx] = useState(0);
   const [correct, setCorrect] = useState(false);
+  const [wrongFlash, setWrongFlash] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
 
   const step = steps[stepIdx];
   const isLast = stepIdx === steps.length - 1;
@@ -192,12 +195,19 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
         setCorrect(true);
         setTimeout(() => {
           setCorrect(false);
+          setShowGuide(false);
           if (isLast) {
             onDone();
           } else {
             setStepIdx((i) => i + 1);
           }
         }, 1500);
+      } else if (
+        (k || e.code.startsWith("Key") || e.code.startsWith("Digit")) &&
+        !(step.targetCode && e.key === "Shift")
+      ) {
+        setWrongFlash(true);
+        setTimeout(() => setWrongFlash(false), 400);
       }
     };
 
@@ -229,7 +239,19 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
             />
           ))}
         </div>
-        <div className="w-16" />
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("keyboard_learn_done");
+            sessionStorage.removeItem("keyboard-practice-state");
+            setStepIdx(0);
+            setCorrect(false);
+            setWrongFlash(false);
+            setShowGuide(false);
+          }}
+          className="px-3.5 py-1.5 bg-white border-2 border-gray-200 rounded-full text-xs font-bold text-gray-400 hover:bg-gray-50 transition-all cursor-pointer"
+        >
+          처음부터 다시하기
+        </button>
       </div>
 
       {/* 단계 안내 */}
@@ -252,20 +274,31 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
         <div className="flex items-end gap-3">
           <span className="text-5xl mb-1">🧒</span>
           <div className="flex flex-col items-end gap-2">
-            <div className="relative bg-white rounded-3xl rounded-bl-sm shadow-md px-7 py-5">
+            <div
+              className={`relative bg-white rounded-3xl rounded-bl-sm shadow-md px-7 py-5 border-2 transition-colors duration-150 ${
+                correct
+                  ? "border-green-400 correct-flash"
+                  : wrongFlash
+                    ? "border-red-400 shake"
+                    : "border-transparent"
+              }`}
+            >
               <p className="text-2xl font-black text-gray-800">{step.bubble}</p>
             </div>
-            {step.phase === 2 && step.hint && (
-              <div className="relative inline-block group">
-                <span className="text-md text-white px-4 py-2 rounded-xl bg-purple-600 font-bold cursor-default select-none block">
-                  🔍 힌트가 필요하면 마우스를 올려보세요.
-                </span>
-                <div className="absolute top-full right-0 mt-2 px-4 py-3 bg-gray-800 text-white text-base font-bold rounded-2xl shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none flex items-center gap-3">
+            <div className="relative">
+              <button
+                onClick={() => setShowGuide((v) => !v)}
+                className="text-sm text-white px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 font-bold cursor-pointer transition-colors"
+              >
+                {showGuide ? "🙈 힌트 숨기기" : "💡 힌트를 보려면 클릭하세요"}
+              </button>
+              {showGuide && step.hint && (
+                <div className="absolute top-full right-0 mt-2 px-4 py-3 bg-gray-800 text-white text-base font-bold rounded-2xl shadow-lg whitespace-nowrap flex items-center gap-3 z-10">
                   <KeyVisual target={step.target} />
                   <span>{step.hint}</span>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -280,6 +313,13 @@ export function KeyboardLearn({ onDone, onHome }: Props) {
           </div>
         )}
       </div>
+
+      {/* 키보드 가이드 (fixed 하단, phase 1 전용) */}
+      {showGuide && step.phase === 1 && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t-2 border-purple-100 shadow-lg px-6 py-4 z-40">
+          <KeyboardGuide />
+        </div>
+      )}
     </div>
   );
 }
