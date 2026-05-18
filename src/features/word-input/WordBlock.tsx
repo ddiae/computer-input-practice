@@ -62,8 +62,10 @@ export function WordBlock({ word, status, mode, onStatusChange, hintFlash = fals
 
   useEffect(() => {
     if (status === 'input' && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
+      const el = inputRef.current;
+      el.focus();
+      const len = el.value.length;
+      el.setSelectionRange(len, len);
     }
   }, [status]);
 
