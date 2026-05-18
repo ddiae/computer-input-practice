@@ -25,7 +25,7 @@ function SetProgress({
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
         <div
           className="h-full bg-linear-to-r from-green-400 to-emerald-400 rounded-full transition-all duration-500"
           style={{ width: `${percent}%` }}
@@ -51,50 +51,49 @@ export function SetCard({ set, mode, wordStatuses, onStatusChange }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:gap-4">
-      {/* 원문 */}
-      <div className="lg:w-2/5 shrink-0 bg-amber-50 rounded-3xl shadow-md p-5">
-        <p className="text-sm font-bold text-amber-700 mb-3">📖</p>
-        <div className="flex flex-col gap-2">
-          {set.original.map((line, i) => (
-            <p
-              key={i}
-              className="text-2xl text-gray-800 leading-relaxed font-medium"
-            >
-              {line}
-            </p>
-          ))}
+    <div className="flex flex-col gap-3">
+      {/* 상단: 안내 + 프로그레스바 */}
+      <div className="flex items-center gap-4">
+        <div className="flex-1">
+          <SetProgress set={set} wordStatuses={wordStatuses} />
         </div>
+        {mode === "levelup" && (
+          <button
+            onClick={handleHint}
+            disabled={hintFlash}
+            className="px-3 py-2 rounded-full text-md font-bold bg-amber-200 text-amber-600 hover:bg-amber-300 transition-colors cursor-pointer disabled:opacity-50"
+          >
+            힌트 보기
+          </button>
+        )}
       </div>
 
-      {/* 제시문 */}
-      <div className="flex-1 bg-white rounded-3xl shadow-md p-5 flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-bold text-gray-600">
-            {mode === "normal"
-              ? "✏️ 틀린 곳을 찾아 고쳐요."
-              : "🔍 틀린 곳을 직접 찾아 고쳐요."}
-          </p>
-          {mode === "levelup" && (
-            <button
-              onClick={handleHint}
-              disabled={hintFlash}
-              className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-600 hover:bg-amber-200 transition-colors cursor-pointer disabled:opacity-50"
-            >
-              💡 힌트 보기
-            </button>
-          )}
+      {/* 본문: 원문 + 제시문 나란히 */}
+      <div className="flex flex-col gap-3 lg:flex-row lg:gap-4">
+        {/* 원문 */}
+        <div className="lg:w-2/5 shrink-0 bg-amber-50 rounded-3xl shadow-md p-5">
+          <div className="flex flex-col gap-3">
+            {set.original.map((line, i) => (
+              <p
+                key={i}
+                className="text-2xl font-black text-gray-800 py-1.5 leading-none"
+              >
+                {line}
+              </p>
+            ))}
+          </div>
         </div>
 
-        <SetProgress set={set} wordStatuses={wordStatuses} />
-
-        <ParagraphView
-          set={set}
-          mode={mode}
-          wordStatuses={wordStatuses}
-          onStatusChange={onStatusChange}
-          hintFlash={hintFlash}
-        />
+        {/* 제시문 */}
+        <div className="flex-1 bg-white rounded-3xl shadow-md p-5">
+          <ParagraphView
+            set={set}
+            mode={mode}
+            wordStatuses={wordStatuses}
+            onStatusChange={onStatusChange}
+            hintFlash={hintFlash}
+          />
+        </div>
       </div>
     </div>
   );

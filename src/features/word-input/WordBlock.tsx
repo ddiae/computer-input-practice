@@ -146,7 +146,7 @@ export function WordBlock({ word, status, mode, onStatusChange, hintFlash = fals
             ? isWrongHighlight
               ? 'text-red-500 border-2 border-red-300 bg-red-50 hover:bg-red-100 cursor-pointer shadow-[0_3px_0_#fca5a5]'
               : 'text-gray-700 border-2 border-transparent hover:border-gray-200 hover:bg-gray-100 cursor-pointer'
-            : 'text-gray-700 cursor-default',
+            : 'text-gray-700 border-2 border-transparent cursor-default',
         ]
           .filter(Boolean)
           .join(' ')}
